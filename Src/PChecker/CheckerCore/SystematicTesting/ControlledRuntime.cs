@@ -269,7 +269,7 @@ namespace PChecker.SystematicTesting
         public StateMachineId CreateStateMachineId(Type type, string name = null) => new StateMachineId(type, name, this);
 
         /// <summary>
-        /// Creates an state machine id that is uniquely tied to the specified unique name. The
+        /// Creates a state machine id that is uniquely tied to the specified unique name. The
         /// returned state machine id can either be a fresh id (not yet bound to any state machine), or
         /// it can be bound to a previously created state machine. In the second case, this state machine
         /// id can be directly used to communicate with the corresponding state machine.
@@ -506,7 +506,9 @@ namespace PChecker.SystematicTesting
             var stateMachine = Create(type);
             IStateMachineManager stateMachineManager = new StateMachineManager(this, stateMachine);
 
-            IEventQueue eventQueue = new EventQueue(stateMachineManager, stateMachine);
+            // IEventQueue eventQueue = new EventQueue(stateMachineManager, stateMachine);
+            // IEventQueue eventQueue = new EventBag(stateMachineManager, stateMachine);
+            IEventQueue eventQueue = new EventChannel(stateMachineManager, stateMachine);
             stateMachine.Configure(this, id, stateMachineManager, eventQueue);
             stateMachine.SetupEventHandlers();
             stateMachine.self = new PMachineValue(id, stateMachine.receives.ToList());
